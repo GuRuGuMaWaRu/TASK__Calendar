@@ -11,6 +11,7 @@ import {
   SHOW_ERRORS,
   CLEAR_ERRORS
 } from "./types";
+import { getStartAndDuration } from "../utils/layoutHelpers";
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get("/api/current_user");
@@ -20,14 +21,16 @@ export const fetchUser = () => async dispatch => {
 
 export const addEvent = () => async (dispatch, getState) => {
   const event = getState().form;
-  const res = await axios.post("/api/event/add", event);
+  const updatedEvent = { ...event, ...getStartAndDuration(event) };
+  const res = await axios.post("/api/event/add", updatedEvent);
 
   dispatch({ type: ADD_EVENT, payload: res.data });
 };
 
 export const updateEvent = () => async (dispatch, getState) => {
   const event = getState().form;
-  await axios.post("/api/event/update", event);
+  const updatedEvent = { ...event, ...getStartAndDuration(event) };
+  await axios.post("/api/event/update", updatedEvent);
   const res = await axios.get("/api/events");
 
   dispatch({ type: UPDATE_EVENT, payload: res.data });

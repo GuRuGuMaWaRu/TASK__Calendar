@@ -7,6 +7,7 @@ import AddIcon from "material-ui-icons/Add";
 
 import AddForm from "./Dialogs/AddForm";
 import EditForm from "./Dialogs/EditForm";
+import Calendar from "./Calendar";
 import validateInput from "../utils/validateInput";
 import * as actions from "../actions";
 
@@ -46,8 +47,7 @@ class Dashboard extends React.Component {
   handleClose = type => {
     if (type === "save" || type === "update") {
       const errors = validateInput(this.props.form);
-
-      if (errors) {
+      if (Object.entries(errors).length > 0) {
         this.props.showErrors(errors);
         this.setState({ timeout: null });
         this.setState({ timeout: setTimeout(this.props.clearErrors, 2000) });
@@ -78,7 +78,6 @@ class Dashboard extends React.Component {
         return (
           <div key={_id} onClick={() => this.handleEditEvent(_id)}>
             <h4>{title}</h4>
-            <p>{`Event takes place from ${fromTime} till ${tillTime}`}</p>
           </div>
         );
       });
@@ -91,8 +90,8 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div>
-        <div>{this.displayedEvents()}</div>
+      <div className="dashboard">
+        <Calendar />
         <div>
           <Button
             variant="fab"

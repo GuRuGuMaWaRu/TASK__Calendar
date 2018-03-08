@@ -19,22 +19,24 @@ module.exports = app => {
   });
 
   app.post("/api/event/update/", requireLogin, async (req, res) => {
-    const { id, title, fromTime, tillTime } = req.body;
+    const { id, title, fromTime, tillTime, start, duration } = req.body;
 
     const event = await Event.updateOne(
       { _id: id },
-      { title, fromTime, tillTime }
+      { title, fromTime, tillTime, start, duration }
     );
     res.send(event);
   });
 
   app.post("/api/event/add", requireLogin, async (req, res) => {
-    const { id, title, fromTime, tillTime } = req.body;
+    const { id, title, fromTime, tillTime, start, duration } = req.body;
 
     const event = new Event({
       title,
       fromTime,
       tillTime,
+      start,
+      duration,
       _user: req.user.id
     });
 

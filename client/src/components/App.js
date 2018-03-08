@@ -18,7 +18,7 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <div>
+        <div className="app">
           <Header />
           <Route exact path="/" component={auth ? Dashboard : Landing} />
           <Route exact path="/calendar" component={Dashboard} />

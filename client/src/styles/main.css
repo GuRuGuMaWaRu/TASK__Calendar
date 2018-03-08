@@ -8,3 +8,55 @@ a {
   text-decoration: none;
   color: #fff;
 }
+
+#root {
+  height: 100vh;
+}
+
+.app,
+.dashboard {
+  height: 100%;
+}
+
+.calendar {
+  display: flex;
+  justify-content: center;
+  /* height: 100%; */
+  font-family: "Open Sans";
+}
+
+.calendar .column-1,
+.calendar .column-2 {
+  display: flex;
+  flex: 1 1 100px;
+}
+
+.calendar .column-1 .time,
+.calendar .column-2 .time {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0 1 100px;
+  font-weight: 200;
+  font-size: 16px;
+  color: darkgray;
+}
+
+.calendar .column-1 .events,
+.calendar .column-2 .events {
+  flex: 1 1 100px;
+}
+
+.calendar .column-1 div:nth-child(even),
+.calendar .column-2 div:nth-child(even) {
+  font-size: 12px;
+}
+
+.event {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid #6e9ecf;
+  background-color: #e2ecf5;
+}
