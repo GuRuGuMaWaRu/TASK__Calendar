@@ -1,0 +1,11 @@
+export const FETCH_USER = "fetch_user";
+export const FETCH_EVENTS = "fetch_events";
+export const UPDATE_EVENTS = "update_events";
+export const UPDATE_EVENT = "update_event";
+export const ADD_EVENT = "add_event";
+export const DELETE_EVENT = "delete_event";
+export const UPDATE_FORM = "update_form";
+export const CLEAR_FORM = "clear_form";
+export const FILL_FORM = "fill_form";
+export const SHOW_ERRORS = "show_errors";
+export const CLEAR_ERRORS = "clear_errors";
