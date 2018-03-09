@@ -67,31 +67,21 @@ class Dashboard extends React.Component {
     this.props.clearForm();
   };
 
-  handleEditEvent = id => {
-    this.props.fetchEvent(id);
-    this.setState({ openEditForm: true });
-  };
-
-  displayedEvents = () => {
-    if (this.props.events) {
-      return this.props.events.map(({ _id, title, fromTime, tillTime }) => {
-        return (
-          <div key={_id} onClick={() => this.handleEditEvent(_id)}>
-            <h4>{title}</h4>
-          </div>
-        );
-      });
+  handleEditEvent = event => {
+    if (event.target.classList.contains("event")) {
+      const id = event.target.id.replace(/(right)/, "");
+      this.props.fetchEvent(id);
+      this.setState({ openEditForm: true });
     }
-
-    return null;
+    return;
   };
 
   render() {
     const { classes } = this.props;
 
     return (
-      <div className="dashboard">
-        <Calendar />
+      <div className="dashboard" onClick={this.handleEditEvent}>
+        {this.props.events.length > 0 && <Calendar />}
         <div>
           <Button
             variant="fab"

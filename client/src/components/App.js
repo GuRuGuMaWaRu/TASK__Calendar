@@ -10,6 +10,7 @@ import Dashboard from "./Dashboard";
 
 class App extends Component {
   componentDidMount() {
+    console.log("fetching user...");
     this.props.fetchUser();
   }
 
@@ -21,7 +22,6 @@ class App extends Component {
         <div className="app">
           <Header />
           <Route exact path="/" component={auth ? Dashboard : Landing} />
-          <Route exact path="/calendar" component={Dashboard} />
         </div>
       </BrowserRouter>
     );

@@ -10,14 +10,3 @@ export default combineReducers({
   form: formReducer,
   events: eventsReducer
 });
-
-/*
-
-TODOs:
-
-1. Display error messages
-2. Prevent Add, Edit event if there are errors
-3. Create Calendar layout
-4. Figure out how to display many different events
-
-*/

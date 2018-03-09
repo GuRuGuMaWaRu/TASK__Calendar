@@ -15,7 +15,6 @@ export default function(state = INITIAL, action) {
     case CLEAR_FORM:
       return INITIAL;
     case FILL_FORM:
-      console.log(payload);
       return payload;
     default:
       return state;
