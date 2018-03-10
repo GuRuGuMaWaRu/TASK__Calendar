@@ -119,9 +119,9 @@ const renderEvent = (
     eventHeight = eventDuration * minInPixels;
   }
 
+  event.style.setProperty("--width", `${eventWidth - 2}px`);
   event.style.setProperty("--top", `${eventTop}px`);
   event.style.setProperty("--left", `${eventLeftOffset}px`);
-  event.style.setProperty("--width", `${eventWidth - 2}px`);
   if (eventTop + eventHeight > eventsColumnHeight) {
     eventHeight = eventHeight - (eventTop + eventHeight - eventsColumnHeight);
   }
@@ -154,4 +154,24 @@ export const placeEvents = (groupedEvents, eventsInColumn, isRightColumn) => {
       }
     });
   });
+};
+
+export const eventsInTwoColumns = events => {
+  let leftColumn = [];
+  let rightColumn = [];
+  let doubleEvents = [];
+
+  events.forEach(event => {
+    if (event.start < 270) {
+      leftColumn.push(event);
+    }
+    if (event.start >= 270 || event.start + event.duration > 270) {
+      rightColumn.push(event);
+    }
+    if (event.start < 270 && event.start + event.duration > 270) {
+      doubleEvents.push(event._id);
+    }
+  });
+
+  return [leftColumn, rightColumn, doubleEvents];
 };

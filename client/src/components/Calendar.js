@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { groupAndSetWidth, placeEvents } from "../utils/layoutHelpers";
-import { eventsInTwoColumns } from "../utils/eventHelpers";
+import {
+  groupAndSetWidth,
+  placeEvents,
+  eventsInTwoColumns
+} from "../utils/layoutHelpers";
 
 const time_first = [
   "8:00",
@@ -72,7 +75,7 @@ class Calendar extends Component {
     const leftColumnEvents = leftColumn.map(({ _id, title }) => {
       return (
         <div key={_id} id={_id} className="event">
-          <h4>{title}</h4>
+          {title}
         </div>
       );
     });
@@ -83,7 +86,7 @@ class Calendar extends Component {
           id={`${_id}right`}
           className={`event ${doubleEvents.includes(_id) ? "doubled" : ""}`}
         >
-          <h4>{title}</h4>
+          {title}
         </div>
       );
     });

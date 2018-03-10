@@ -2,7 +2,7 @@
   --top: 0;
   --left: 0;
   --height: 0;
-  --width: 0;
+  --width: 50px;
 }
 
 * {
@@ -61,7 +61,6 @@ a {
 
 .event {
   position: absolute;
-  /* max-width: 200px; */
   border-left: 2px solid #6e9ecf;
   background-color: #e2ecf5;
   top: var(--top);
