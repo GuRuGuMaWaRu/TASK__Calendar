@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -34,12 +35,24 @@ const time_second = [
 ];
 
 class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    this.renderCalendarEvents = this.renderCalendarEvents.bind(this);
+  }
   componentDidMount() {
     this.renderCalendarEvents();
+    window.addEventListener(
+      "resize",
+      _.debounce(this.renderCalendarEvents, 150)
+    );
   }
 
   componentDidUpdate() {
     this.renderCalendarEvents();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.renderCalendarEvents);
   }
 
   renderCalendarEvents() {
