@@ -18,7 +18,10 @@ const groupConflictingEvents = events => {
   const eventGroups = [];
 
   for (let i = 0, len = events.length; i < len; i++) {
-    let group = { width: 0, events: [] };
+    let group = {
+      width: 0,
+      events: []
+    };
     group.events.push(events[i]._id);
 
     for (let j = 0, lenJ = events.length; j < lenJ; j++) {
@@ -51,12 +54,27 @@ const findNextGroup = (groups, referenceGroup) => {
   });
 };
 
+export const getEventsWithWidth = sortedEventGroups => {
+  const events = {};
+
+  sortedEventGroups.forEach(group => {
+    group.events.forEach(event => {
+      if (!events.hasOwnProperty(event)) {
+        events[event] = group.width;
+      }
+    });
+  });
+
+  return events;
+};
+
 export const groupAndSetWidth = events => {
   const eventGroups = groupConflictingEvents(events);
   const sortedEventGroups = eventGroups.sort(
     (g1, g2) => g2.events.length - g1.events.length
   );
   const eventsColumnWidth = document.querySelector(".events").offsetWidth;
+  console.log(eventsColumnWidth);
 
   for (let i = 0, len = sortedEventGroups.length; i < len; i++) {
     if (sortedEventGroups[i].width === 0) {
@@ -130,33 +148,34 @@ const renderEvent = (
   return null;
 };
 
-export const placeEvents = (groupedEvents, eventsInColumn, isRightColumn) => {
-  const columnToArr = eventsInColumn.map(event => event._id);
-  const placedEvents = {};
+// export const placeEvents = (groupedEvents, eventsInColumn, isRightColumn) => {
+//   const columnToArr = eventsInColumn.map(event => event._id);
+//   const placedEvents = {};
 
-  groupedEvents.forEach(group => {
-    let leftOffset = 0;
-    group.events.forEach(event => {
-      if (!placedEvents[event] && columnToArr.includes(event)) {
-        const eventToPlace = eventsInColumn.filter(
-          eventObj => eventObj._id === event
-        );
-        renderEvent(
-          event,
-          group.width,
-          leftOffset,
-          eventToPlace[0].start,
-          eventToPlace[0].duration,
-          isRightColumn
-        );
-        leftOffset += group.width;
-        placedEvents[event] = true;
-      }
-    });
-  });
-};
+//   groupedEvents.forEach(group => {
+//     let leftOffset = 0;
+//     group.events.forEach(event => {
+//       if (!placedEvents[event] && columnToArr.includes(event)) {
+//         const eventToPlace = eventsInColumn.filter(
+//           eventObj => eventObj._id === event
+//         );
+//         console.log(event);
+//         renderEvent(
+//           event,
+//           group.width,
+//           leftOffset,
+//           eventToPlace[0].start,
+//           eventToPlace[0].duration,
+//           isRightColumn
+//         );
+//         leftOffset += group.width;
+//         placedEvents[event] = true;
+//       }
+//     });
+//   });
+// };
 
-export const eventsInTwoColumns = events => {
+export const placeEventsInTwoColumns = events => {
   let leftColumn = [];
   let rightColumn = [];
   let doubleEvents = [];
@@ -174,4 +193,71 @@ export const eventsInTwoColumns = events => {
   });
 
   return [leftColumn, rightColumn, doubleEvents];
+};
+
+const isPositionEmpty = (conflictingEvents, position) => {
+  return conflictingEvents.every(
+    conflictingEvent => conflictingEvent.position !== position
+  );
+};
+
+export const newLayoutFunction = (
+  eventsWithWidth,
+  eventsInColumn,
+  isRightColumn
+) => {
+  const sortedEvents = eventsInColumn.sort((e1, e2) => e1.start - e2.start);
+  const placedEvents = {};
+  // loop through sortedEvents
+  sortedEvents.forEach(currentEvent => {
+    // get event's width
+    // console.log("currentEvent", currentEvent);
+    const width = eventsWithWidth[currentEvent._id];
+
+    /////// check if this is a double event (in both columns) TO DO LATER
+
+    // create temporary repository for conflicting events from placedEvents
+    let conflictingEvents = [];
+    for (let placedEvent in placedEvents) {
+      if (
+        // placedEvents[placedEvent].end >
+        // currentEvent.duration - currentEvent.start
+        placedEvents[placedEvent].end > currentEvent.start
+      ) {
+        conflictingEvents.push(placedEvents[placedEvent]);
+        // console.log("conflictingEvents", conflictingEvents);
+      }
+    }
+
+    // check positions of conflictingEvents and take the first available
+    const placedEventsLength = Object.keys(placedEvents).length;
+    let position = placedEventsLength;
+
+    for (let i = 0, len = placedEventsLength; i < len; i++) {
+      let positionIsEmpty = isPositionEmpty(conflictingEvents, i);
+      if (positionIsEmpty) {
+        position = i;
+        break;
+      }
+    }
+
+    // add rendered event to placedEvents
+    placedEvents[currentEvent._id] = {
+      end: currentEvent.start + currentEvent.duration,
+      position
+    };
+
+    // determine left offset for the event we render
+    const leftOffset = width * position;
+
+    // render the event
+    renderEvent(
+      currentEvent._id,
+      width,
+      leftOffset,
+      currentEvent.start,
+      currentEvent.duration,
+      isRightColumn
+    );
+  });
 };

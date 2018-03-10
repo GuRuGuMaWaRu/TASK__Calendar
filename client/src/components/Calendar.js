@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 
 import {
   groupAndSetWidth,
-  placeEvents,
-  eventsInTwoColumns
+  // placeEvents,
+  placeEventsInTwoColumns,
+  newLayoutFunction,
+  getEventsWithWidth
 } from "../utils/layoutHelpers";
 
 const time_first = [
@@ -57,9 +59,16 @@ class Calendar extends Component {
 
   renderCalendarEvents() {
     const groupedEventsWithWidth = groupAndSetWidth(this.props.events);
-    const [leftColumn, rightColumn] = eventsInTwoColumns(this.props.events);
-    placeEvents(groupedEventsWithWidth, leftColumn, false);
-    placeEvents(groupedEventsWithWidth, rightColumn, true);
+    const [leftColumn, rightColumn] = placeEventsInTwoColumns(
+      this.props.events
+    );
+    // placeEvents(groupedEventsWithWidth, leftColumn, false);
+    // placeEvents(groupedEventsWithWidth, rightColumn, true);
+    console.log("groupedEventsWithWidth", groupedEventsWithWidth);
+
+    const events = getEventsWithWidth(groupedEventsWithWidth);
+    newLayoutFunction(events, leftColumn, false);
+    newLayoutFunction(events, rightColumn, true);
   }
 
   firstColumn = () =>
@@ -81,7 +90,7 @@ class Calendar extends Component {
     });
 
   render() {
-    const [leftColumn, rightColumn, doubleEvents] = eventsInTwoColumns(
+    const [leftColumn, rightColumn, doubleEvents] = placeEventsInTwoColumns(
       this.props.events
     );
 
