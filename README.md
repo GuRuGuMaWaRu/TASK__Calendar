@@ -20,4 +20,4 @@ The hardest part was to render events as per requirements. I'm sure current solu
 - [ ] this project on Heroku: [https://damp-meadow-56363.herokuapp.com/](https://damp-meadow-56363.herokuapp.com/)
 
 ## Video Walkthrough
-![]()
+![](https://github.com/gurugumawaru/TASK__Calendar/blob/master/Test__Event-Calendar.gif)
