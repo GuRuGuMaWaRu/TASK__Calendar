@@ -62,9 +62,6 @@ class Calendar extends Component {
     const [leftColumn, rightColumn] = placeEventsInTwoColumns(
       this.props.events
     );
-    // placeEvents(groupedEventsWithWidth, leftColumn, false);
-    // placeEvents(groupedEventsWithWidth, rightColumn, true);
-    console.log("groupedEventsWithWidth", groupedEventsWithWidth);
 
     const events = getEventsWithWidth(groupedEventsWithWidth);
     newLayoutFunction(events, leftColumn, false);

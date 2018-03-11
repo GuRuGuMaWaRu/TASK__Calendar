@@ -26,9 +26,11 @@ const groupConflictingEvents = events => {
 
     for (let j = 0, lenJ = events.length; j < lenJ; j++) {
       if (i !== j) {
+        // event is conflicting if it starts before the other event ends
+        // and ends after the other event starts
         if (
-          timeToInt(events[i].fromTime) < timeToInt(events[j].tillTime) &&
-          timeToInt(events[i].tillTime) > timeToInt(events[j].fromTime)
+          timeToInt(events[j].fromTime) < timeToInt(events[i].tillTime) &&
+          timeToInt(events[j].tillTime) > timeToInt(events[i].fromTime)
         ) {
           // events are conflicting, add them to the same group
           group.events.push(events[j]._id);
@@ -74,7 +76,6 @@ export const groupAndSetWidth = events => {
     (g1, g2) => g2.events.length - g1.events.length
   );
   const eventsColumnWidth = document.querySelector(".events").offsetWidth;
-  console.log(eventsColumnWidth);
 
   for (let i = 0, len = sortedEventGroups.length; i < len; i++) {
     if (sortedEventGroups[i].width === 0) {
@@ -132,7 +133,7 @@ const renderEvent = (
   }
 
   if (event.classList.contains("doubled")) {
-    eventHeight = eventDuration - (270 - eventStart);
+    eventHeight = (eventDuration - (270 - eventStart)) * minInPixels;
   } else {
     eventHeight = eventDuration * minInPixels;
   }
@@ -143,37 +144,10 @@ const renderEvent = (
   if (eventTop + eventHeight > eventsColumnHeight) {
     eventHeight = eventHeight - (eventTop + eventHeight - eventsColumnHeight);
   }
-  event.style.setProperty("--height", `${eventHeight}px`);
+  event.style.setProperty("--height", `${eventHeight - 2}px`);
 
   return null;
 };
-
-// export const placeEvents = (groupedEvents, eventsInColumn, isRightColumn) => {
-//   const columnToArr = eventsInColumn.map(event => event._id);
-//   const placedEvents = {};
-
-//   groupedEvents.forEach(group => {
-//     let leftOffset = 0;
-//     group.events.forEach(event => {
-//       if (!placedEvents[event] && columnToArr.includes(event)) {
-//         const eventToPlace = eventsInColumn.filter(
-//           eventObj => eventObj._id === event
-//         );
-//         console.log(event);
-//         renderEvent(
-//           event,
-//           group.width,
-//           leftOffset,
-//           eventToPlace[0].start,
-//           eventToPlace[0].duration,
-//           isRightColumn
-//         );
-//         leftOffset += group.width;
-//         placedEvents[event] = true;
-//       }
-//     });
-//   });
-// };
 
 export const placeEventsInTwoColumns = events => {
   let leftColumn = [];
@@ -211,7 +185,6 @@ export const newLayoutFunction = (
   // loop through sortedEvents
   sortedEvents.forEach(currentEvent => {
     // get event's width
-    // console.log("currentEvent", currentEvent);
     const width = eventsWithWidth[currentEvent._id];
 
     /////// check if this is a double event (in both columns) TO DO LATER
@@ -219,13 +192,8 @@ export const newLayoutFunction = (
     // create temporary repository for conflicting events from placedEvents
     let conflictingEvents = [];
     for (let placedEvent in placedEvents) {
-      if (
-        // placedEvents[placedEvent].end >
-        // currentEvent.duration - currentEvent.start
-        placedEvents[placedEvent].end > currentEvent.start
-      ) {
+      if (placedEvents[placedEvent].end > currentEvent.start) {
         conflictingEvents.push(placedEvents[placedEvent]);
-        // console.log("conflictingEvents", conflictingEvents);
       }
     }
 
