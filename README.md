@@ -17,7 +17,7 @@
 Spent 5 days doing it and the hardest part was to render events as per requirements. I'm sure current solution is not the best, but it was deinitely such at that time.
 
 ## Links
-- [ ] this project on Heroku: []()
+- [ ] this project on Heroku: [https://damp-meadow-56363.herokuapp.com/](https://damp-meadow-56363.herokuapp.com/)
 
 ## Video Walkthrough
 ![]()
