@@ -85,8 +85,9 @@ class Calendar extends Component {
     });
 
   render() {
+    const { events } = this.props;
     const [leftColumn, rightColumn, doubleEvents] = placeEventsInTwoColumns(
-      this.props.events
+      events
     );
 
     const leftColumnEvents = leftColumn.map(({ _id, title }) => {
@@ -112,11 +113,11 @@ class Calendar extends Component {
       <div className="calendar">
         <div className="column-1">
           <div className="time">{this.firstColumn()}</div>
-          <div className="events">{leftColumnEvents}</div>
+          <div className="events">{events.length > 0 && leftColumnEvents}</div>
         </div>
         <div className="column-2">
           <div className="time">{this.secondColumn()}</div>
-          <div className="events">{rightColumnEvents}</div>
+          <div className="events">{{events.length > 0 && leftColumnEvents}</div>
         </div>
       </div>
     );
