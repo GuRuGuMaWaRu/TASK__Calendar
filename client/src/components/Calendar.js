@@ -3,11 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import {
-  groupAndSetWidth,
-  // placeEvents,
+  getEventsWithWidth,
   placeEventsInTwoColumns,
-  newLayoutFunction,
-  getEventsWithWidth
+  renderEvents
 } from "../utils/layoutHelpers";
 
 const time_first = [
@@ -41,6 +39,7 @@ class Calendar extends Component {
     super(props);
     this.renderCalendarEvents = this.renderCalendarEvents.bind(this);
   }
+
   componentDidMount() {
     this.renderCalendarEvents();
     window.addEventListener(
@@ -58,14 +57,13 @@ class Calendar extends Component {
   }
 
   renderCalendarEvents() {
-    const groupedEventsWithWidth = groupAndSetWidth(this.props.events);
+    const eventsWithWidth = getEventsWithWidth(this.props.events);
     const [leftColumn, rightColumn] = placeEventsInTwoColumns(
       this.props.events
     );
 
-    const events = getEventsWithWidth(groupedEventsWithWidth);
-    newLayoutFunction(events, leftColumn, false);
-    newLayoutFunction(events, rightColumn, true);
+    const placedEvents = renderEvents(eventsWithWidth, leftColumn, false, null);
+    renderEvents(eventsWithWidth, rightColumn, true, placedEvents);
   }
 
   firstColumn = () =>

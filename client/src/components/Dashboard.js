@@ -77,11 +77,11 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, events } = this.props;
 
     return (
       <div className="dashboard" onClick={this.handleEditEvent}>
-        {this.props.events.length > 0 && <Calendar />}
+        {events.length > 0 && <Calendar />}
         <div>
           <Button
             variant="fab"
