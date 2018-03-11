@@ -8,6 +8,7 @@ import AddIcon from "material-ui-icons/Add";
 import AddForm from "./Dialogs/AddForm";
 import EditForm from "./Dialogs/EditForm";
 import Calendar from "./Calendar";
+import CalendarEmpty from "./CalendarEmpty";
 import validateInput from "../utils/validateInput";
 import * as actions from "../actions";
 
@@ -81,7 +82,7 @@ class Dashboard extends React.Component {
 
     return (
       <div className="dashboard" onClick={this.handleEditEvent}>
-        {events.length > 0 && <Calendar />}
+        {events.length > 0 ? <Calendar /> : <CalendarEmpty />}
         <div>
           <Button
             variant="fab"
