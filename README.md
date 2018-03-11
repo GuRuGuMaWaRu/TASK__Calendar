@@ -14,7 +14,7 @@
 - [ ] User should be able to login and persist his inputs between logins.
 
 ## Thoughts
-Spent 5 days doing it and the hardest part was to render events as per requirements. I'm sure current solution is not the best, but it was deinitely such at that time.
+The hardest part was to render events as per requirements. I'm sure current solution is not the best, but it really took me a lot of effort and many iterations before I came up with the current version. It uses dynamic rendering and relies heavily on changing coordinates for all events according to their place in relation to other events.
 
 ## Links
 - [ ] this project on Heroku: [https://damp-meadow-56363.herokuapp.com/](https://damp-meadow-56363.herokuapp.com/)
