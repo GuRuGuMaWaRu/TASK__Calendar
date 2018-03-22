@@ -30,7 +30,7 @@ const styles = theme => ({
   }
 });
 
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
   state = {
     openAddForm: false,
     openEditForm: false,
