@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withStyles } from "material-ui/styles";
@@ -23,9 +23,16 @@ const styles = {
   }
 };
 
-const Header = ({ classes, auth, events }) => {
-  const exportToFile = () => {
-    const processedEvents = prepareForExport(events);
+class Header extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (this.props.auth !== nextProps.auth) {
+      return true;
+    }
+    return false;
+  }
+
+  exportToFile = () => {
+    const processedEvents = prepareForExport(this.props.events);
 
     const fileName = "calendarEvents.json";
 
@@ -37,8 +44,8 @@ const Header = ({ classes, auth, events }) => {
     FileSaver.saveAs(fileToSave, fileName);
   };
 
-  const renderContent = () => {
-    switch (auth) {
+  renderContent = () => {
+    switch (this.props.auth) {
       case null:
         return;
       case false:
@@ -50,7 +57,7 @@ const Header = ({ classes, auth, events }) => {
       default:
         return (
           <div>
-            <Button key="2" color="inherit" onClick={exportToFile}>
+            <Button key="2" color="inherit" onClick={this.exportToFile}>
               Export Calendar Events
             </Button>
             <Button key="3" color="inherit">
@@ -61,19 +68,26 @@ const Header = ({ classes, auth, events }) => {
     }
   };
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            Big Bad Calendar
-          </Typography>
-          {renderContent()}
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-};
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            >
+              Big Bad Calendar
+            </Typography>
+            {this.renderContent()}
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
