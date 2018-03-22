@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
@@ -17,12 +16,10 @@ class App extends Component {
     const { auth } = this.props;
 
     return (
-      <BrowserRouter>
-        <div className="app">
-          <Header />
-          <Route exact path="/" component={auth ? Dashboard : Landing} />
-        </div>
-      </BrowserRouter>
+      <div className="app">
+        <Header />
+        {auth ? <Dashboard /> : <Landing />}
+      </div>
     );
   }
 }
