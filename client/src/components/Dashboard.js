@@ -9,7 +9,6 @@ import AddForm from "./Dialogs/AddForm";
 import EditForm from "./Dialogs/EditForm";
 import Calendar from "./Calendar";
 import CalendarEmpty from "./CalendarEmpty";
-import validateInput from "../utils/validateInput";
 import * as actions from "../actions";
 
 const styles = theme => ({
@@ -30,11 +29,10 @@ const styles = theme => ({
   }
 });
 
-class Dashboard extends React.PureComponent {
+class Dashboard extends React.Component {
   state = {
     openAddForm: false,
-    openEditForm: false,
-    timeout: null
+    openEditForm: false
   };
 
   componentDidMount() {
@@ -42,20 +40,12 @@ class Dashboard extends React.PureComponent {
   }
 
   handleClickOpen = () => {
-    this.setState({ openAddForm: true });
+    this.setState({
+      openAddForm: true
+    });
   };
 
   handleClose = type => {
-    if (type === "save" || type === "update") {
-      const errors = validateInput(this.props.form);
-      if (Object.entries(errors).length > 0) {
-        this.props.showErrors(errors);
-        this.setState({ timeout: null });
-        this.setState({ timeout: setTimeout(this.props.clearErrors, 2000) });
-        return;
-      }
-    }
-
     if (type === "save") {
       this.props.addEvent();
     } else if (type === "update") {
@@ -64,7 +54,10 @@ class Dashboard extends React.PureComponent {
       this.props.deleteEvent();
     }
 
-    this.setState({ openAddForm: false, openEditForm: false });
+    this.setState({
+      openAddForm: false,
+      openEditForm: false
+    });
     this.props.clearForm();
   };
 
@@ -72,7 +65,9 @@ class Dashboard extends React.PureComponent {
     if (event.target.classList.contains("event")) {
       const id = event.target.id.replace(/(right)/, "");
       this.props.fetchEvent(id);
-      this.setState({ openEditForm: true });
+      this.setState({
+        openEditForm: true
+      });
     }
     return;
   };
@@ -112,13 +107,11 @@ Dashboard.propTypes = {
   addEvent: PropTypes.func.isRequired,
   updateEvent: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
-  fetchEvent: PropTypes.func.isRequired,
-  showErrors: PropTypes.func.isRequired
+  fetchEvent: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({ events, form }) => ({
-  events,
-  form
+const mapStateToProps = ({ events }) => ({
+  events
 });
 
 export default connect(mapStateToProps, actions)(withStyles(styles)(Dashboard));

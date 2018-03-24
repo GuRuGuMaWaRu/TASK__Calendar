@@ -80,6 +80,6 @@ export const showErrors = errors => ({
   payload: errors
 });
 
-export const clearErrors = errors => ({
+export const clearErrors = () => ({
   type: CLEAR_ERRORS
 });
